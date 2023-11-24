@@ -30,6 +30,9 @@
 
 int IRValue1,IRValue2,IRValue3,IRValueIN,IRValueOUT;
 int sensitivity_value = 0;
+int sensitivity_value1 = 0;
+int sensitivity_value2 = 0;
+int sensitivity_value3 = 0;
 int stolen_object;
 
 void setup() {
@@ -73,6 +76,19 @@ void loop() {
   IRValueIN = analogRead(check_in);
   IRValueOUT = analogRead(check_out);
   
+  //Serial print
+  Serial.print("1:");
+  Serial.println(Object1);
+  Serial.print("2:");
+  Serial.println(Object2);
+  Serial.print("3:");
+  Serial.println(Object3);
+  
+  Serial.print("IN:");
+  Serial.println(check_in);
+  Serial.print("OUT:");
+  Serial.println(check_out);
+  
   //CHECK IN COUNT
   if(IRValueIN <= sensitivity_value){
     current_Person_amount += 1;
@@ -97,17 +113,27 @@ void loop() {
   }
   
   //Check if object got stolen
-  if(IRValue1 <= sensitivity_value){
+  if(IRValue1 <= sensitivity_value1){
     alert_status = true;
     stolen_object = 1;
   }
-  if(IRValue2 <= sensitivity_value){
+  if(IRValue2 <= sensitivity_value2){
     alert_status = true;
     stolen_object = 2;
   }
-  if(IRValue3 <= sensitivity_value){
+  if(IRValue3 <= sensitivity_value3){
     alert_status = true;
     stolen_object = 3;
   }
-  
+}
+
+void ResetIR(){
+  sensitivity_value1 = analogRead(Object1);
+  sensitivity_value2 = analogRead(Object1);
+  sensitivity_value3 = analogRead(Object1);
+}
+
+void onAlertStatusChange()  {
+  ResetIR();
+  // Add your code here to act upon AlertStatus change
 }
